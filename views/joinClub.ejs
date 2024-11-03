@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Join Club</title>
+</head>
+<body>
+    <% if(!locals.user) { %>
+        <h1>You are unauthorized to view this page, please <a href="/login">login</a> first</h1>
+    <% } else { %>
+        <h1>Join the Club</h1>
+        <form action="/join-club" method="POST">
+            <div>
+                <label for="passcode">Passcode: </label>
+                <input type="number" name="passcode" id="passcode">
+            </div>
+            <button type="submit">Join</button>
+        </form>
+    <% } %>
+</body>
+</html>
