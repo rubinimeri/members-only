@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+</head>
+<body>
+    <% if (!locals.user) { %>
+        <h1>Unauthorized route, please <a href="/login">login</a> or <a href="/sign-up">sign up</a></h1>
+    <% } %>
+    <% if (user.admin) { %>
+        <h1>You are already an admin</h1>
+    <% } else { %>
+        <h1>Get Admin Privileges</h1>
+        <% errors.forEach(error => { %>
+            <p><%=error.msg%></p>
+        <% }) %>
+        <form action="/admin" method="POST">
+            <div>
+                <label for="passcode">Passcode: </label>
+                <input type="number" name="passcode" id="passcode">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    <% } %>
+</body>
+</html>

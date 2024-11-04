@@ -11,8 +11,18 @@
     <% if (!locals.user) { %>
         <p>Hello, please <a href="/login">Log In</a> or <a href="sign-up">Sign Up</a></p>
     <% } else { %>
-        <% console.log(user) %>
-        <p>Hello <%= user.username %>, would you like to <a href="/join-club">join the club</a>?</p>
+        <% if (user.membership_status) { %>
+            <p>
+                Hello <%= user.username %>, you are part of the secret club!
+                <% if (!user.admin) { %>
+                    Would you like to become an <a href="/admin">admin</a>?
+                <% } %>
+            </p>
+        <% } else { %>
+            <p>Hello <%= user.username %>, would you like to <a href="/join-club">join the club</a>?</p>
+        <% } %>
+        <%- include("messages", { user: user, messages: messages }) %>
+        <a href="/create-message">Create Message</a>
         <form action="/logout" method="POST">
             <button type="submit">Logout</button>
         </form>

@@ -1,0 +1,25 @@
+<div class="messages">
+    <% if ((!locals.user && locals.messages) || (!locals.user.membership_status && locals.messages)) { %>
+            <% messages.forEach(message => { %>
+            <h3><%=message.title%></h3>
+            <p><%=message.message%></p>
+            <% }) %>
+        <% } else if (user.admin && locals.messages) { %>
+            <% messages.forEach(message => { %>
+            <form action="/delete/<%=message.id%>" method="POST">
+                <h3><%= message.title %></h3>
+                <p><%= message.message %></p>
+                <p>- <b><%= message.username %></b></p>
+                <p><%= message.created_at %></p>
+                <button type="submit">Delete</button>
+            </form>
+            <% }) %>
+        <% } else if (user.membership_status && locals.messages) { %>
+            <% messages.forEach(message => { %>
+            <h3><%=message.title%></h3>
+            <p><%=message.message%></p>
+            <p>- <b><%=message.username%></b></p>
+            <p><%=message.created_at%></p>
+            <% }) %>
+    <% } %>
+</div>

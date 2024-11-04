@@ -18,9 +18,25 @@ async function updateMembership(id) {
     await pool.query("UPDATE users SET membership_status = true WHERE id = $1", [id]);
 }
 
+async function addMessage(title, message, userId) {
+    await pool.query("INSERT INTO messages (title, message, user_id) VALUES ($1, $2, $3)", [title, message, userId]);
+}
+
+async function getMessages() {
+    const { rows } = await pool.query("SELECT users.username, messages.title, messages.message, messages.created_at FROM users INNER JOIN messages ON users.id = messages.user_id")
+    return rows;
+}
+
+async function updateAdminPrivilege(id) {
+    await pool.query("UPDATE users SET admin = true WHERE id = $1", [id]);
+}
+
 module.exports = {
     getUser,
     addUser,
     updateMembership,
-    getUserById
+    getUserById,
+    addMessage,
+    getMessages,
+    updateAdminPrivilege
 }
