@@ -1,0 +1,13 @@
+<header>
+    <h1><a href="/">The Circle</a></h1>
+    <nav>
+        <% if (!locals.user) { %>
+            <a class="login" href="/login">Login</a>
+            <a href="/sign-up">Sign Up</a>
+        <% } else { %>
+                <form action="/logout" method="POST">
+                    <button class="log-out" type="submit">Logout</button>
+                </form>
+        <% } %>
+    </nav>
+</header>

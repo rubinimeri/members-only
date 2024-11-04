@@ -31,7 +31,7 @@ const joinClubPost = [
 ]
 
 function createMessageGet(req, res) {
-    res.render("createMessage");
+    res.render("createMessage", { user: req.user });
 }
 
 const createMessagePost = [
