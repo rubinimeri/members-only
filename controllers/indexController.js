@@ -8,7 +8,6 @@ const {
 
 async function indexGet(req, res) {
     const messages = await db.getMessages();
-    console.log(messages);
     res.render('index', { user: req.user, messages: messages });
 }
 

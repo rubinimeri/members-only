@@ -1,6 +1,7 @@
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("../db/pool");
+require("dotenv").config();
 
 const initializeSession = session({
     secret: process.env.SESSION_SECRET,

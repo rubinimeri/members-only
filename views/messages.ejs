@@ -1,6 +1,6 @@
 <div class="messages">
     <%if (locals.messages) { %>
-        <% if (!locals.user) { %>
+        <% if (!locals.user || !user.membership_status) { %>
             <% messages.forEach(message => { %>
                 <div class="card">
                     <div class="title-container">
@@ -50,7 +50,7 @@
                     </button>
                 </div>
             <% }) %>
-        <% } else if (user.admin && locals.messages) { %>
+        <% } else if (user.admin) { %>
             <% messages.forEach(message => { %>
             <form action="/delete/<%=message.id%>" method="POST">
                 <div class="card">
@@ -102,15 +102,15 @@
                 </div>
             </form>
             <% }) %>
-        <% } else if (user.membership_status && locals.messages) { %>
+        <% } else if (user.membership_status) { %>
             <% messages.forEach(message => { %>
                 <div class="card">
                     <div class="title-container">
                         <h3 class="card__title"><%= message.title %></h3>
                         <p class="author"><%=message.username%></p>
                     </div>
-                    <p class="card__content"><%=message.message%>></p>
-                    <div class="card__date"><%message.created_at%></div>
+                    <p class="card__content"><%=message.message%></p>
+                    <div class="card__date"><%=message.created_at%></div>
                     <button disabled="disabled" class="button">
                         <svg
                                 xmlns="http://www.w3.org/2000/svg"

@@ -4,12 +4,10 @@ const bcrypt = require("bcrypt");
 const db = require("../db/queries");
 
 passport.serializeUser((user, done) => {
-    console.log("Inside serializeUser", user);
     return done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    console.log("Inside deserializeUser");
     try {
         const user = await db.getUserById(id)
         return done(null, user);
@@ -20,7 +18,6 @@ passport.deserializeUser(async (id, done) => {
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {
-        console.log(`Username: ${username}`, `Password: ${password}`);
         try {
             const user = await db.getUser(username);
 

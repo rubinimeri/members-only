@@ -32,7 +32,7 @@ async function getMessages() {
 }
 
 async function updateAdminPrivilege(id) {
-    await pool.query("UPDATE users SET admin = true WHERE id = $1", [id]);
+    await pool.query("UPDATE users SET admin = true, membership_status = true WHERE id = $1", [id]);
 }
 
 module.exports = {
