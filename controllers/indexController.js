@@ -1,5 +1,10 @@
 const db = require("../db/queries");
-const { body, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
+const {
+    validateMembershipPasscode,
+    validateCreateMessage,
+    validateAdminPasscode
+} = require("../middleware/validateFields");
 
 async function indexGet(req, res) {
     const messages = await db.getMessages();
@@ -11,14 +16,9 @@ function joinClubGet(req, res) {
     res.render('joinClub', { user: req.user });
 }
 
-const validatePasscode = [
-    body('passcode').custom(value => {
-        return value === process.env.MEMBERSHIP_PASSCODE;
-    }).withMessage("Wrong passcode")
-]
 
 const joinClubPost = [
-    validatePasscode,
+    validateMembershipPasscode,
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -33,17 +33,6 @@ const joinClubPost = [
 function createMessageGet(req, res) {
     res.render("createMessage");
 }
-
-const validateCreateMessage = [
-    body('title')
-        .trim()
-        .isLength({ min: 2 }).withMessage("Title must be at least 2 characters")
-        .escape(),
-    body('message')
-        .trim()
-        .isLength({ min: 2 }).withMessage("Message must be at least 2 characters")
-        .escape()
-]
 
 const createMessagePost = [
     validateCreateMessage,
@@ -63,12 +52,6 @@ function adminGet(req, res) {
     res.render("admin", { user: req.user, errors: [] });
 }
 
-const validateAdminPasscode = [
-    body('passcode')
-        .custom(value => value === process.env.ADMIN_PASSCODE)
-        .withMessage("Wrong passcode")
-]
-
 const adminPost = [
     validateAdminPasscode,
     async (req, res) => {
@@ -82,12 +65,19 @@ const adminPost = [
     }
 ]
 
+async function deleteMessagePost(req, res) {
+    const { messageId } = req.params;
+    await db.deleteMessage(parseInt(messageId));
+    res.redirect("/");
+}
+
 module.exports = {
     indexGet,
     joinClubGet,
     joinClubPost,
     createMessageGet,
     createMessagePost,
+    deleteMessagePost,
     adminGet,
     adminPost
 }

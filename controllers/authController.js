@@ -1,46 +1,8 @@
 const db = require("../db/queries");
 const bcrypt = require("bcrypt");
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
+const { validateSignUp, validateLogin } = require("../middleware/validateFields");
 const passport = require("../strategies/localStrategy");
-
-const validateSignUp = [
-    body("full_name")
-        .trim()
-        .notEmpty().withMessage("Full name is required")
-        .isLength({ min: 2 }).withMessage("Must have at least 2 characters")
-        .escape(),
-    body("username")
-        .trim()
-        .notEmpty().withMessage("Username is required")
-        .isAlpha().withMessage("Username must only contain letters")
-        .isLength({ min: 2 }).withMessage("Username must have at least 2 characters")
-        .escape(),
-    body("password")
-        .notEmpty().withMessage("Password is required")
-        .isLength({ min: 5 }).withMessage("Password must have at least 5 characters")
-        .trim()
-        .escape(),
-    body("confirm_password")
-        .custom((value, { req }) => {
-            return value === req.body.password;
-        }).withMessage("Passwords must match")
-        .trim()
-        .escape()
-]
-
-const validateLogin = [
-    body("username")
-        .trim()
-        .notEmpty().withMessage("Username is required")
-        .isAlpha().withMessage("Username must only contain letters")
-        .isLength({ min: 2 }).withMessage("Username must have at least 2 characters")
-        .escape(),
-    body("password")
-        .notEmpty().withMessage("Password is required")
-        .isLength({ min: 5 }).withMessage("Password must have at least 5 characters")
-        .trim()
-        .escape(),
-]
 
 function signUpGet(req, res) {
     res.render("auth/signUp");

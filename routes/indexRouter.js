@@ -9,6 +9,7 @@ indexRouter.get("/create-message", indexController.createMessageGet);
 indexRouter.get("/admin", indexController.adminGet);
 indexRouter.post("/join-club", indexController.joinClubPost);
 indexRouter.post("/create-message", indexController.createMessagePost);
+indexRouter.post("/delete/:messageId", indexController.deleteMessagePost);
 indexRouter.post("/admin", indexController.adminPost);
 
 module.exports = indexRouter;
