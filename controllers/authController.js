@@ -10,7 +10,7 @@ function signUpGet(req, res) {
 
 const signUpPost = [
     validateSignUp,
-    async (req, res) => {
+    async (req, res, next) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -23,7 +23,11 @@ const signUpPost = [
             if (!checkUser) {
                 const hashedPassword = await bcrypt.hash(password, 10);
                 await db.addUser(full_name, username, hashedPassword);
-                return res.redirect("/");
+                const user = await db.getUser(username);
+                return req.login(user, (err) => {
+                    if (err) return next(err);
+                    return res.redirect("/");
+                })
             }
 
             res.status(409).render("auth/signUp", { errorMessage: "User already exists" });
